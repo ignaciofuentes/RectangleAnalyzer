@@ -14,7 +14,7 @@ namespace RectangleAnalyzer.Tests
         {
 
             [TestMethod]
-            public void ReturnsThreeOutcomesForDifferentValueRectangles()
+            public void ReturnsFiveOutcomesForDifferentValueRectangles()
             {
                 //Arrange
                 RectangleF rec1 = new RectangleF(0, 1, 10, 10);
@@ -24,7 +24,7 @@ namespace RectangleAnalyzer.Tests
                 //Act
                 var result = processor.GetAnalysis();
                 //Assert
-                Assert.AreEqual(3, result.Count());
+                Assert.AreEqual(5, result.Count());
             }
             [TestMethod]
             public void ReturnsOnlyEquivalencyForEqualValueRectangles()
@@ -307,6 +307,104 @@ namespace RectangleAnalyzer.Tests
 
                 //Assert
                 Assert.AreEqual("Rectangles are not adjacent to each other", result);
+            }
+        }
+
+        [TestClass]
+        public class TheCongruencyMethod
+        {
+            [TestMethod]
+            public void ReturnsNoCongruencyForNonCongruentRectangles()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 2, 2);
+                RectangleF rec2 = new RectangleF(0, 2, 2, 3);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Congruency();
+
+                //Assert
+                Assert.AreEqual("Rectangles are not congruent", result);
+            }
+
+            [TestMethod]
+            public void ReturnsCongruencyForCongruentRectanglesWithMatchingWidthAndHeight()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 2, 4);
+                RectangleF rec2 = new RectangleF(0, 0, 2, 4);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Congruency();
+
+                //Assert
+                Assert.AreEqual("Rectangles are congruent", result);
+            }
+
+            [TestMethod]
+            public void ReturnsCongruencyForCongruentRectanglesWithOppositeWidthAndHeight()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 4, 2);
+                RectangleF rec2 = new RectangleF(0, 0, 2, 4);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Congruency();
+
+                //Assert
+                Assert.AreEqual("Rectangles are congruent", result);
+            }
+        }
+
+        [TestClass]
+        public class TheSimilarityMethod
+        {
+            [TestMethod]
+            public void ReturnsNoSimilarityForNonSimilarRectangles()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 2, 2);
+                RectangleF rec2 = new RectangleF(0, 2, 2, 3);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Similarity();
+
+                //Assert
+                Assert.AreEqual("Rectangles are not similar", result);
+            }
+
+            [TestMethod]
+            public void ReturnsSimilarityForRectanglesWithEqualMatchingRatioOnWidthAndHeight()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 2, 4);
+                RectangleF rec2 = new RectangleF(0, 0, 4, 8);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Similarity();
+
+                //Assert
+                Assert.AreEqual("Rectangles are similar", result);
+            }
+
+            [TestMethod]
+            public void ReturnsSimilarityForRectanglesWithEqualOppositeRatioOnWidthAndHeight()
+            {
+                //Arrange
+                RectangleF rec1 = new RectangleF(0, 0, 2, 4);
+                RectangleF rec2 = new RectangleF(0, 0, 8, 4);
+                var processor = new RectangleProcessor(rec1, rec2);
+
+                //Act
+                var result = processor.Similarity();
+
+                //Assert
+                Assert.AreEqual("Rectangles are similar", result);
             }
         }
     }

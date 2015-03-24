@@ -31,8 +31,12 @@ namespace RectangleAnalyzer.Core
                 yield return Intersection();
                 yield return Containment();
                 yield return Adjacency();
+                yield return Congruency();
+                yield return Similarity();
             }
         }
+
+
 
         public string Intersection()
         {
@@ -75,5 +79,22 @@ namespace RectangleAnalyzer.Core
             return "Rectangles are not adjacent to each other";
         }
 
+        public string Congruency()
+        {
+            if ((rectangle1.Height == rectangle2.Height && rectangle1.Width == rectangle2.Width) || (rectangle1.Height == rectangle2.Width && rectangle1.Width == rectangle2.Height))
+            {
+                return "Rectangles are congruent";
+            }
+            return "Rectangles are not congruent";
+        }
+
+        public string Similarity()
+        {
+            if ((rectangle1.Width / rectangle1.Height == rectangle2.Width / rectangle2.Height) || (rectangle1.Width / rectangle1.Height == rectangle2.Height / rectangle2.Width))
+            {
+                return "Rectangles are similar";
+            }
+            return "Rectangles are not similar";
+        }
     }
 }
