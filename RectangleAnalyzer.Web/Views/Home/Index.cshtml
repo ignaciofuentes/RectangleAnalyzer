@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model RectangleAnalyzer.Web.Models.RectanglesFormViewModel
+
+<div class="jumbotron">
+    <h1>Rectangle Analyzer</h1>
+    <p class="lead">Please enter rectangle data for analisis</p>
+    @using (Ajax.BeginForm("GetRectangleAnalysis", "Home", new AjaxOptions { UpdateTargetId = "results", InsertionMode = InsertionMode.Replace, OnBegin = "app.clearCanvas", OnSuccess = "app.drawRectangles" }))
+    {	@Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Rectangle 1</legend>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle1.X)
+                        @Html.TextBoxFor(m => m.Rectangle1.X, new { @class = "form-control", placeholder = "X Coordinate" })
+                        @Html.ValidationMessageFor(m => m.Rectangle1.X)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle1.Y)
+                        @Html.TextBoxFor(m => m.Rectangle1.Y, new { @class = "form-control", placeholder = "Y Coordinate" })
+                        @Html.ValidationMessageFor(m => m.Rectangle1.Y)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle1.Width)
+                        @Html.TextBoxFor(m => m.Rectangle1.Width, new { @class = "form-control", placeholder = "Rectangle Width" })
+                        @Html.ValidationMessageFor(m => m.Rectangle1.Width)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle1.Height)
+                        @Html.TextBoxFor(m => m.Rectangle1.Height, new { @class = "form-control", placeholder = "Rectangle Height" })
+                        @Html.ValidationMessageFor(m => m.Rectangle1.Height)
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Rectangle 2</legend>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle2.X)
+                        @Html.TextBoxFor(m => m.Rectangle2.X, new { @class = "form-control", placeholder = "X Coordinate" })
+                        @Html.ValidationMessageFor(m => m.Rectangle2.X)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle2.Y)
+                        @Html.TextBoxFor(m => m.Rectangle2.Y, new { @class = "form-control", placeholder = "Y Coordinate" })
+                        @Html.ValidationMessageFor(m => m.Rectangle2.Y)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle2.Width)
+                        @Html.TextBoxFor(m => m.Rectangle2.Width, new { @class = "form-control", placeholder = "Rectangle Width" })
+                        @Html.ValidationMessageFor(m => m.Rectangle2.Width)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Rectangle2.Height)
+                        @Html.TextBoxFor(m => m.Rectangle2.Height, new { @class = "form-control", placeholder = "Rectangle Height" })
+                        @Html.ValidationMessageFor(m => m.Rectangle2.Height)
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg">Process</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="results"></div>
+        <canvas width="1140" height="800" id="myCanvas" style="border:1px solid #d3d3d3;">
+            Your browser does not support the HTML5 canvas tag.
+        </canvas>
+
+    </div>
+</div>
