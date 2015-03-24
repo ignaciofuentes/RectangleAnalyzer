@@ -68,8 +68,8 @@ namespace RectangleAnalyzer.Core
         {
             if (rectangle1.Right == rectangle2.Left || rectangle2.Right == rectangle1.Left || rectangle1.Top == rectangle2.Bottom || rectangle2.Top == rectangle1.Bottom)
             {
-                var i = RectangleF.Intersect(rectangle1, rectangle2);
-                if (!(i.Width == 0 && i.Height == 0))
+                var intersection = RectangleF.Intersect(rectangle1, rectangle2);
+                if (!(intersection.Width == 0 && intersection.Height == 0))
                     return "Rectangles are adjacent to each other";
             }
             return "Rectangles are not adjacent to each other";
