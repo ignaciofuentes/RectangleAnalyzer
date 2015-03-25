@@ -24,7 +24,7 @@ namespace RectangleAnalyzer.Tests
                 //Act
                 var result = processor.GetAnalysis();
                 //Assert
-                Assert.AreEqual(5, result.Count());
+                Assert.AreEqual(5, result.GetSummary().Count());
             }
             [TestMethod]
             public void ReturnsOnlyEquivalencyForEqualValueRectangles()
@@ -37,28 +37,150 @@ namespace RectangleAnalyzer.Tests
                 //Act
                 var result = processor.GetAnalysis();
                 //Assert
-                Assert.AreEqual("Rectangles are equivalent", result.Single());
+                Assert.AreEqual("Rectangles are equivalent", result.GetSummary().Single());
             }
-
-
         }
         [TestClass]
         public class TheIntersecttionMethod
         {
-            [TestMethod]
-            public void ReturnsIntersectionForOverlappingRectangles()
+            private IntersectionAnalysis SetUp(float x1, float y1, float width1, float height1, float x2, float y2, float width2, float height2)
             {
                 //Arrange
-                RectangleF rec1 = new RectangleF(0, 0, 10, 10);
-                RectangleF rec2 = new RectangleF(9, 9, 10, 10);
+                RectangleF rec1 = new RectangleF(x1, y1, width1, height1);
+                RectangleF rec2 = new RectangleF(x2, y2, width2, height2);
                 var processor = new RectangleProcessor(rec1, rec2);
 
                 //Act
                 var result = processor.Intersection();
+
+                return result;
                 //Assert
-                Assert.AreEqual("Rectangles intersect within an area defined as: (X:9, Y:9, Width:1, Height:1)", result);
+                //Assert.IsTrue(result.IntersectionPresent);
+
             }
 
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheTopLeft()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 3, 1, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(4, 3)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(5, 2)));
+            }
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheMidLeft()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 3, 4, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(4, 4)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(4, 6)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheBottomLeft()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 3, 7, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(4, 7)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(5, 8)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheMidBottom()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 6, 7, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(6, 8)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(8, 8)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheBottomRight()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 9, 7, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(10, 7)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(9, 8)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheMidRight()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 9, 4, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(10, 4)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(10, 6)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheTopRight()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 9, 1, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(9, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(10, 3)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheMidTop()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 6, 1, 2, 2);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(6, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(8,2)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheWholeLeft()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 3, 1, 2, 10);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(5, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(5, 8)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheWholeMiddle()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 6, 1, 1, 10);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(6, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(7, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(6, 8)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(7, 8)));
+            }
+
+            [TestMethod]
+            public void ReturnsIntersectionForOverlappingRectangleOnTheWholeRight()
+            {
+                //Arrange And Act
+                var result = SetUp(4, 2, 6, 6, 9, 1, 2, 10);
+                //Assert
+                Assert.IsTrue(result.IntersectionPresent);
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(9, 2)));
+                Assert.IsTrue(result.IntersectionPoints.Contains(new PointF(9, 8)));
+            }
 
             [TestMethod]
             public void ReturnsNoIntersectionForNonOverlappingRectangles()
@@ -72,7 +194,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Intersection();
 
                 //Assert
-                Assert.AreEqual("Rectangles do not intersect", result);
+                Assert.IsFalse(result.IntersectionPresent);
             }
 
             [TestMethod]
@@ -87,7 +209,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Intersection();
 
                 //Assert
-                Assert.AreEqual("Rectangles do not intersect", result);
+                Assert.IsFalse(result.IntersectionPresent);
             }
         }
         [TestClass]
@@ -106,7 +228,8 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Containment();
 
                 //Assert
-                Assert.AreEqual("Rectangle 2 contains Rectangle 1", result);
+                Assert.IsTrue(result.ContainmentPresent);
+                Assert.IsFalse(result.Rectangle1ContainsRectangle2);
             }
 
             [TestMethod]
@@ -121,7 +244,8 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Containment();
 
                 //Assert
-                Assert.AreEqual("Rectangle 1 contains Rectangle 2", result);
+                Assert.IsTrue(result.ContainmentPresent);
+                Assert.IsTrue(result.Rectangle1ContainsRectangle2);
             }
 
             [TestMethod]
@@ -136,7 +260,9 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Containment();
 
                 //Assert
-                Assert.AreEqual("Rectangle 2 contains Rectangle 1", result);
+
+                Assert.IsTrue(result.ContainmentPresent);
+                Assert.IsFalse(result.Rectangle1ContainsRectangle2);
             }
 
 
@@ -153,7 +279,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Containment();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not contained within each other", result);
+                Assert.IsFalse(result.ContainmentPresent);
             }
 
         }
@@ -172,7 +298,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
             [TestMethod]
             public void ReturnsAdjacencyForInvertedRectanglesAdjacentWithPartialSegmentOnTheSide()
@@ -186,7 +312,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
 
             [TestMethod]
@@ -201,7 +327,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
 
             [TestMethod]
@@ -216,7 +342,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
 
             [TestMethod]
@@ -231,7 +357,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
 
             [TestMethod]
@@ -246,7 +372,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
             [TestMethod]
             public void ReturnsAdjacencyForRectanglesAdjacentWithWholeSegmentOnTheTop()
@@ -260,7 +386,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are adjacent to each other", result);
+                Assert.IsTrue(result.AdjacencyPresent);
             }
 
 
@@ -276,7 +402,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not adjacent to each other", result);
+                Assert.IsFalse(result.AdjacencyPresent);
             }
 
 
@@ -292,7 +418,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not adjacent to each other", result);
+                Assert.IsFalse(result.AdjacencyPresent);
             }
             [TestMethod]
             public void ReturnsNoAdjacencyForInvertedRectanglesNotAdjacentToEachOther()
@@ -306,12 +432,12 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Adjacency();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not adjacent to each other", result);
+                Assert.IsFalse(result.AdjacencyPresent);
             }
         }
 
         [TestClass]
-        public class TheCongruencyMethod
+        public class TheCongruenceMethod
         {
             [TestMethod]
             public void ReturnsNoCongruencyForNonCongruentRectangles()
@@ -322,10 +448,10 @@ namespace RectangleAnalyzer.Tests
                 var processor = new RectangleProcessor(rec1, rec2);
 
                 //Act
-                var result = processor.Congruency();
+                var result = processor.Congruence();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not congruent", result);
+                Assert.IsFalse(result.CongruencePresent);
             }
 
             [TestMethod]
@@ -337,10 +463,10 @@ namespace RectangleAnalyzer.Tests
                 var processor = new RectangleProcessor(rec1, rec2);
 
                 //Act
-                var result = processor.Congruency();
+                var result = processor.Congruence();
 
                 //Assert
-                Assert.AreEqual("Rectangles are congruent", result);
+                Assert.IsTrue(result.CongruencePresent);
             }
 
             [TestMethod]
@@ -352,10 +478,10 @@ namespace RectangleAnalyzer.Tests
                 var processor = new RectangleProcessor(rec1, rec2);
 
                 //Act
-                var result = processor.Congruency();
+                var result = processor.Congruence();
 
                 //Assert
-                Assert.AreEqual("Rectangles are congruent", result);
+                Assert.IsTrue(result.CongruencePresent);
             }
         }
 
@@ -374,7 +500,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Similarity();
 
                 //Assert
-                Assert.AreEqual("Rectangles are not similar", result);
+                Assert.IsFalse(result.SimilarityPresent);
             }
 
             [TestMethod]
@@ -389,7 +515,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Similarity();
 
                 //Assert
-                Assert.AreEqual("Rectangles are similar", result);
+                Assert.IsTrue(result.SimilarityPresent);
             }
 
             [TestMethod]
@@ -404,7 +530,7 @@ namespace RectangleAnalyzer.Tests
                 var result = processor.Similarity();
 
                 //Assert
-                Assert.AreEqual("Rectangles are similar", result);
+                Assert.IsTrue(result.SimilarityPresent);
             }
         }
     }

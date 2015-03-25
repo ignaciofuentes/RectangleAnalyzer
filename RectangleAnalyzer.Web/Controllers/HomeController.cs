@@ -25,7 +25,7 @@ namespace RectangleAnalyzer.Web.Controllers
                 var rectangle2 = new RectangleF(model.Rectangle2.X, model.Rectangle2.Y, model.Rectangle2.Width, model.Rectangle2.Height);
                 
                 var rectangleProcessor = new RectangleProcessor(rectangle1, rectangle2);
-                return PartialView(rectangleProcessor.GetAnalysis());
+                return PartialView(rectangleProcessor.GetAnalysis().GetSummary());
             }
             else return new HttpStatusCodeResult(400);
         }
