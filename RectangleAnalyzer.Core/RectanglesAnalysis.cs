@@ -25,7 +25,6 @@ namespace RectangleAnalyzer.Core
             else
             {
                 yield return IntersectionAnalysis.Message;
-                yield return CongruenceAnalysis.Message;
                 yield return AdjacencyAnalysis.Message;
                 yield return CongruenceAnalysis.Message;
                 yield return SimilarityAnalysis.Message;
