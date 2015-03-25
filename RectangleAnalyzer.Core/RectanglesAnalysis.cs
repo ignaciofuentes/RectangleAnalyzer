@@ -29,6 +29,7 @@ namespace RectangleAnalyzer.Core
                 yield return AdjacencyAnalysis.Message;
                 yield return CongruenceAnalysis.Message;
                 yield return SimilarityAnalysis.Message;
+                yield return ContainmentAnalysis.Message;
             }
         }
 
